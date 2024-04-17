@@ -24,7 +24,7 @@ type IUserStorage interface {
 	CheckMailExists(ctx context.Context, mail string) (string, error)
 	ForgetPassword(ctx context.Context, forget models.ForgetPassword) (string, error)
 	ChangeStatus(ctx context.Context, status models.ChangeStatus) (string, error)
-	LoginByMailAndPassword(ctx context.Context, login models.UserLoginRequest) (user models.CreateUser, err error) 
+	LoginByMailAndPassword(ctx context.Context, login models.UserLoginRequest) (string, error) 
 }
 
 type IRedisStorage interface {

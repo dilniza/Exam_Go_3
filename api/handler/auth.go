@@ -164,7 +164,7 @@ func (h *Handler) UserLoginMailPassword(c *gin.Context) {
 		handleResponseLog(c, h.Log, "error while validating password", http.StatusBadRequest, err.Error())
 		return
 	}
-
+	
 	loginResp, err := h.Services.Auth().UserLoginMailPassword(c.Request.Context(), loginReq)
 	if err != nil {
 		handleResponseLog(c, h.Log, "unauthorized", http.StatusUnauthorized, err)
@@ -172,7 +172,6 @@ func (h *Handler) UserLoginMailPassword(c *gin.Context) {
 	}
 
 	handleResponseLog(c, h.Log, "Logged in successfully", http.StatusOK, loginResp)
-
 }
 
 // UserRegister godoc

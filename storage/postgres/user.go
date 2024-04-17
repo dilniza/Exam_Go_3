@@ -349,45 +349,33 @@ func (c *UserRepo) ChangeStatus(ctx context.Context, status models.ChangeStatus)
 	return status.ID, nil
 }
 
-func (c *UserRepo) LoginByMailAndPassword(ctx context.Context, login models.UserLoginRequest) (user models.CreateUser, err error) {
+func (c *UserRepo) LoginByMailAndPassword(ctx context.Context, login models.UserLoginRequest) (string, error) {
 	var (
-		firstname sql.NullString
-		lastname  sql.NullString
-		phone     sql.NullString
-		password  sql.NullString
-		sex       sql.NullString
-		mail      sql.NullString
+		password string
 	)
 
 	query := `SELECT
-		mail,
-        first_name,
-        last_name,
         password
-        phone,
-        sex
     FROM "Users" 
-    WHERE mail = $1 AND password = $2`
+    WHERE mail = $1`
 
-	row := c.db.QueryRow(ctx, query, user.Mail, user.Password)
-	err = row.Scan(
-		&mail,
-		&firstname,
-		&lastname,
+	row := c.db.QueryRow(ctx, query, login.Mail)
+	err := row.Scan(
 		&password,
-		&phone,
-		&sex,
 	)
+
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return models.CreateUser{}, err
+			return "", err
 		}
 		c.logger.Error("failed to scan user by email from database", logger.Error(err))
-		return models.CreateUser{}, err
+		return "", err
 	}
 
-	user.Mail = mail.String
-	user.Password = password.String
+	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(login.Password))
+	if err != nil {
+		return "", errors.New("password mismatch")
+	}
 
-	return user, nil
+	return login.Mail, nil
 }
