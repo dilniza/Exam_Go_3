@@ -21,7 +21,7 @@ type IUserStorage interface {
 	Delete(ctx context.Context, id string) error
 	
 	ChangePassword(ctx context.Context, pass models.ChangePassword) (string, error)
-	CheckMailExists(ctx context.Context, mail string) (bool, error)
+	CheckMailExists(ctx context.Context, mail string) (string, error)
 	ForgetPassword(ctx context.Context, forget models.ForgetPassword) (string, error)
 	ChangeStatus(ctx context.Context, status models.ChangeStatus) (string, error)
 	LoginByMailAndPassword(ctx context.Context, login models.UserLoginRequest) (user models.CreateUser, err error) 

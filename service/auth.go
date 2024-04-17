@@ -91,7 +91,7 @@ func (a authService) UserLoginMailPassword(ctx context.Context, user models.User
 func (a authService) UserLoginOtp(ctx context.Context, mail models.UserMail) error {
 
 	_, err := a.storage.User().CheckMailExists(ctx, mail.Mail)
-	if err == nil {
+	if err != nil {
 		a.logger.Error("gmail address isn't registered", logger.Error(err))
 		return errors.New("gmail address isn't registered")
 	}
@@ -116,13 +116,10 @@ func (a authService) UserLoginOtp(ctx context.Context, mail models.UserMail) err
 }
 
 func (a authService) UserRegister(ctx context.Context, loginRequest models.UserMail) error {
-	exists, err := a.storage.User().CheckMailExists(ctx, loginRequest.Mail)
+	_, err := a.storage.User().CheckMailExists(ctx, loginRequest.Mail)
 	if err != nil {
 		a.logger.Error("error while checking email existence", logger.Error(err))
 		return err
-	}
-	if exists {
-		return errors.New("user with this email already exists")
 	}
 
 	fmt.Println(" loginRequest.Login: ", loginRequest.Mail)

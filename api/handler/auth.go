@@ -66,7 +66,7 @@ func (h *Handler) ForgetPassword(c *gin.Context) {
 	}
 
 	if _, err := check.ValidateEmail(loginReq.Mail); err != nil {
-		handleResponseLog(c, h.Log, "Email address does not exist or is unavailable "+loginReq.Mail, http.StatusBadRequest, err.Error())
+		handleResponseLog(c, h.Log, "Email address is incorrect"+loginReq.Mail, http.StatusBadRequest, err.Error())
 		return
 	}
 	err := h.Services.Auth().UserLoginOtp(c.Request.Context(), loginReq)
@@ -75,7 +75,7 @@ func (h *Handler) ForgetPassword(c *gin.Context) {
 		return
 	}
 
-	handleResponseLog(c, h.Log, "Otp sent successfully", http.StatusOK, "")
+	handleResponseLog(c, h.Log, "Otp sent successfully", http.StatusOK, "Success. Check your email")
 }
 
 

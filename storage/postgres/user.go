@@ -179,7 +179,9 @@ func (c *UserRepo) GetAll(ctx context.Context, req models.GetAllUsersRequest) (m
 	offset := (req.Page - 1) * req.Limit
 
 	if req.Search != "" {
-		filter = fmt.Sprintf(` AND (first_name ILIKE '%%%v%%' OR last_name ILIKE '%%%v%%')`, req.Search, req.Search)
+		filter = fmt.Sprintf(` WHERE (first_name ILIKE '%%%v%%' OR last_name ILIKE '%%%v%%')`, req.Search, req.Search)
+	} else {
+		filter = ""
 	}
 
 	filter += fmt.Sprintf(" OFFSET %v LIMIT %v", offset, req.Limit)
@@ -304,13 +306,13 @@ func (c *UserRepo) ChangePassword(ctx context.Context, pass models.ChangePasswor
 	return "Password changed successfully", nil
 }
 
-func (c *UserRepo) CheckMailExists(ctx context.Context, mail string) (bool, error) {
-	var exists bool
+func (c *UserRepo) CheckMailExists(ctx context.Context, mail string) (string, error) {
+	var exists string
 	query := `SELECT mail FROM "Users" WHERE mail = $1`
 	err := c.db.QueryRow(ctx, query, mail).Scan(&exists)
 	if err != nil {
 		c.logger.Error("failed to check if email exists", logger.Error(err))
-		return false, err
+		return "", err
 	}
 	return exists, nil
 }
