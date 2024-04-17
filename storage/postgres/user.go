@@ -347,7 +347,7 @@ func (c *UserRepo) ChangeStatus(ctx context.Context, status models.ChangeStatus)
 	return status.ID, nil
 }
 
-func (c *UserRepo) LoginByMail(ctx context.Context, user models.UserLoginMailOtp) (string, error) {
+func (c *UserRepo) LoginByMailAndPassword(ctx context.Context, login models.UserLoginRequest) (user models.CreateUser, err error) {
 	var (
 		firstname sql.NullString
 		lastname  sql.NullString
@@ -365,10 +365,10 @@ func (c *UserRepo) LoginByMail(ctx context.Context, user models.UserLoginMailOtp
         phone,
         sex
     FROM "Users" 
-    WHERE mail = $1`
+    WHERE mail = $1 AND password = $2`
 
-	row := c.db.QueryRow(ctx, query, user.Mail)
-	err := row.Scan(
+	row := c.db.QueryRow(ctx, query, user.Mail, user.Password)
+	err = row.Scan(
 		&mail,
 		&firstname,
 		&lastname,
@@ -378,18 +378,14 @@ func (c *UserRepo) LoginByMail(ctx context.Context, user models.UserLoginMailOtp
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return "", err
+			return models.CreateUser{}, err
 		}
 		c.logger.Error("failed to scan user by email from database", logger.Error(err))
-		return "", err
+		return models.CreateUser{}, err
 	}
 
-	user.User.Mail = mail.String
-	user.User.FirstName = firstname.String
-	user.User.LastName = lastname.String
-	user.User.Password = password.String
-	user.User.Phone = phone.String
-	user.User.Sex = sex.String
+	user.Mail = mail.String
+	user.Password = password.String
 
-	return user.Mail, nil
+	return user, nil
 }

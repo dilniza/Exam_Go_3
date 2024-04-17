@@ -30,18 +30,25 @@ func New(services service.IServiceManager, log logger.ILogger) *gin.Engine {
 
 	r.POST("/user", h.CreateUser)
 	
-	r.POST("user/password", h.ForgetPasswordOtp)
-	r.POST("user/password/reset", h.ForgetPassword)
-	r.POST("user/login", h.LoginUser)
-	r.POST("user/register", h.UserRegister)
-	r.POST("user/register-confirm", h.UserRegisterConfirm)
+	//2
+	r.POST("/user/register", h.UserRegister)
+	r.POST("/user/register-confirm", h.UserRegisterConfirm)
+	//3
+	r.POST("/user/login", h.UserLoginMailPassword)
+	//4
+	r.POST("/user/login/email", h.UserLoginWithEmail)
+	r.POST("/user/login/otp", h.UserLoginWithOtp)
+	//5
+	r.PATCH("/user/password/change", h.ChangePassword)
+	//6
+	r.POST("/user/password", h.ForgetPassword)
+	r.POST("/user/password/reset", h.ForgetPasswordReset)
+	//7
+	r.PATCH("/user/status", h.ChangeStatus)
 
 	r.Use(authMiddleware)
 	r.Use(logMiddleware)
-	
-	r.PATCH("/user", h.ChangePassword)
-	r.PATCH("/user/status", h.ChangeStatus)
-
+	//1
 	r.PUT("/user/:id", h.UpdateUser)
 	r.GET("/user/:id", h.GetUserByID)
 	r.GET("/user", h.GetAllUsers)

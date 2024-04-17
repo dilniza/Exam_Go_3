@@ -90,6 +90,34 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.UserLoginMailOtp:
+    properties:
+      mail:
+        type: string
+      otp:
+        type: string
+      user:
+        $ref: '#/definitions/models.CreateUser'
+    type: object
+  models.UserLoginRequest:
+    properties:
+      mail:
+        type: string
+      password:
+        type: string
+    type: object
+  models.UserLoginResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  models.UserMail:
+    properties:
+      mail:
+        type: string
+    type: object
 info:
   contact: {}
   description: This is a sample server celler server.
@@ -275,7 +303,143 @@ paths:
       summary: update a user
       tags:
       - user
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: User login
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: User login
+      tags:
+      - auth
+  /user/login/email:
+    post:
+      consumes:
+      - application/json
+      description: User logins with mail, otp is sent to user mail
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserMail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: User login with mail
+      tags:
+      - auth
+  /user/login/otp:
+    post:
+      consumes:
+      - application/json
+      description: User inputs otp and mail
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginMailOtp'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: User logins with otp
+      tags:
+      - auth
   /user/password:
+    post:
+      consumes:
+      - application/json
+      description: User Forgetpassword
+      parameters:
+      - description: register
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserMail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: User Forgetpassword
+      tags:
+      - Forgetpassword
+  /user/password/change:
     patch:
       consumes:
       - application/json
@@ -337,6 +501,74 @@ paths:
       summary: Reset forgotten password
       tags:
       - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: User register
+      parameters:
+      - description: register
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserMail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: User register
+      tags:
+      - auth
+  /user/register-confirm:
+    post:
+      consumes:
+      - application/json
+      description: User register
+      parameters:
+      - description: register
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginMailOtp'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: User register
+      tags:
+      - auth
   /user/status:
     patch:
       consumes:
