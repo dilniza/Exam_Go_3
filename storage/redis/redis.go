@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"user/config"
-	"user/storage"
+	"user/storage/postgres"
 
 	"time"
 
@@ -15,7 +15,7 @@ type Store struct {
 	db *redis.Client
 }
 
-func New(cfg config.Config) storage.IRedisStorage {
+func New(cfg config.Config) postgres.IRedisStorage {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: cfg.RedisHost + ":" + cfg.RedisPort,
 	})
@@ -43,9 +43,6 @@ func (s Store) Get(ctx context.Context, key string) (interface{}, error) {
 	fmt.Println("Gotten in redis cache")
 	return resp.Val(), nil
 }
-
-// 127.0.0.1:6379> GET user_id:610fd550-427c-4fec-81c1-1549f2f4f88d
-// (nil)
 
 func (s Store) Del(ctx context.Context, key string) error {
 	statusCmd := s.db.Del(ctx, key)

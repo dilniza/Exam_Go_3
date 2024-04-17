@@ -2,11 +2,12 @@ package postgres
 
 import (
 	"context"
+	"exam3/storage"
 	"fmt"
 	"time"
 	"user/config"
 	"user/pkg/logger"
-	"user/storage"
+	postgres "user/storage"
 	"user/storage/redis"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -20,7 +21,7 @@ type Store struct {
 	redis  storage.IRedisStorage
 }
 
-func New(ctx context.Context, cfg config.Config, logger logger.ILogger, redis storage.IRedisStorage) (storage.IStorage, error) {
+func New(ctx context.Context, cfg config.Config, logger logger.ILogger, redis storage.IRedisStorage) (postgres.IStorage, error) {
 	url := fmt.Sprintf(`host=%s port=%v user=%s password=%s database=%s sslmode=disable`,
 		cfg.PostgresHost, cfg.PostgresPort, cfg.PostgresUser, cfg.PostgresPassword, cfg.PostgresDatabase)
 

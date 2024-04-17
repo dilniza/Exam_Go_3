@@ -9,7 +9,7 @@ import (
 	"time"
 	"user/api/models"
 	"user/pkg/logger"
-	"user/storage"
+	postgres "user/storage"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -19,10 +19,10 @@ import (
 type UserRepo struct {
 	db     *pgxpool.Pool
 	logger logger.ILogger
-	redis  storage.IRedisStorage
+	redis  postgres.IRedisStorage
 }
 
-func NewUserRepo(db *pgxpool.Pool, log logger.ILogger, redis storage.IRedisStorage) UserRepo {
+func NewUserRepo(db *pgxpool.Pool, log logger.ILogger, redis postgres.IRedisStorage) UserRepo {
 	return UserRepo{
 		db:     db,
 		logger: log,
