@@ -336,7 +336,7 @@ paths:
             $ref: '#/definitions/models.Response'
       summary: User login
       tags:
-      - auth
+      - Login
   /user/login/email:
     post:
       consumes:
@@ -370,7 +370,7 @@ paths:
             $ref: '#/definitions/models.Response'
       summary: User login with mail
       tags:
-      - auth
+      - Login
   /user/login/otp:
     post:
       consumes:
@@ -404,7 +404,7 @@ paths:
             $ref: '#/definitions/models.Response'
       summary: User logins with otp
       tags:
-      - auth
+      - Login
   /user/password:
     post:
       consumes:
@@ -470,7 +470,7 @@ paths:
       - ApiKeyAuth: []
       summary: Change user password
       tags:
-      - user
+      - Auth
   /user/password/reset:
     post:
       consumes:
@@ -500,7 +500,7 @@ paths:
             $ref: '#/definitions/models.Response'
       summary: Reset forgotten password
       tags:
-      - user
+      - Forgetpassword
   /user/register:
     post:
       consumes:
@@ -534,7 +534,7 @@ paths:
             $ref: '#/definitions/models.Response'
       summary: User register
       tags:
-      - auth
+      - Register
   /user/register-confirm:
     post:
       consumes:
@@ -568,14 +568,14 @@ paths:
             $ref: '#/definitions/models.Response'
       summary: User register
       tags:
-      - auth
+      - Register
   /user/status:
     patch:
       consumes:
       - application/json
-      description: Updates the active status (enabled/disabled) of a user.
+      description: Updates the active status of a user.
       parameters:
-      - description: user
+      - description: status
         in: body
         name: status
         required: true
@@ -600,7 +600,7 @@ paths:
       - ApiKeyAuth: []
       summary: Change user status
       tags:
-      - user
+      - ChangeStatus
 securityDefinitions:
   ApiKeyAuth:
     in: header

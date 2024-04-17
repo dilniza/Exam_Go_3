@@ -9,12 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ChangePasswordHandler godoc
+// ChangePassword godoc
 // @Security     ApiKeyAuth
 // @Router       /user/password/change [PATCH]
 // @Summary      Change user password
 // @Description  Updates a user password with the provided old and new passwords.
-// @Tags         user
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
 // @Param        user body models.ChangePassword true "user"
@@ -83,7 +83,7 @@ func (h *Handler) ForgetPassword(c *gin.Context) {
 // @Router       /user/password/reset [POST]
 // @Summary      Reset forgotten password
 // @Description  Resets a user password using a one-time password for verification.
-// @Tags         user
+// @Tags         Forgetpassword
 // @Accept       json
 // @Produce      json
 // @Param        user body models.ForgetPassword true "user"
@@ -111,15 +111,15 @@ func (h *Handler) ForgetPasswordReset(c *gin.Context) {
 	handleResponseLog(c, h.Log, "Password reset successfully", http.StatusOK, msg)
 }
 
-// ChangeStatusHandler godoc
+// ChangeStatus godoc
 // @Security     ApiKeyAuth
 // @Router       /user/status [PATCH]
 // @Summary      Change user status
-// @Description  Updates the active status (enabled/disabled) of a user.
-// @Tags         user
+// @Description  Updates the active status of a user.
+// @Tags         ChangeStatus
 // @Accept       json
 // @Produce      json
-// @Param        status body models.ChangeStatus true "user"
+// @Param        status body models.ChangeStatus true "status"
 // @Success      200  {object}  string
 // @Failure      400  {object}  models.Response
 // @Failure      500  {object}  models.Response
@@ -136,14 +136,14 @@ func (h *Handler) ChangeStatus(c *gin.Context) {
 		return
 	}
 
-	handleResponseLog(c, h.Log, "User status updated successfully", http.StatusOK, userID)
+	handleResponseLog(c, h.Log, "User status updated successfully", http.StatusOK, "Status changed for: "+userID)
 }
 
-// UserLogin godoc
+// UserLoginMailPassword godoc
 // @Router       /user/login [POST]
 // @Summary      User login
 // @Description  User login
-// @Tags         auth
+// @Tags         Login
 // @Accept       json
 // @Produce      json
 // @Param        login body models.UserLoginRequest true "login"
@@ -179,7 +179,7 @@ func (h *Handler) UserLoginMailPassword(c *gin.Context) {
 // @Router       /user/register [POST]
 // @Summary      User register
 // @Description  User register
-// @Tags         auth
+// @Tags         Register
 // @Accept       json
 // @Produce      json
 // @Param        register body models.UserMail true "register"
@@ -214,7 +214,7 @@ func (h *Handler) UserRegister(c *gin.Context) {
 // @Router       /user/register-confirm [POST]
 // @Summary      User register
 // @Description  User register
-// @Tags         auth
+// @Tags         Register
 // @Accept       json
 // @Produce      json
 // @Param        register body models.UserLoginMailOtp true "register"
@@ -251,11 +251,11 @@ func (h *Handler) UserRegisterConfirm(c *gin.Context) {
 
 }
 
-// UserRegister godoc
+// UserLoginWithEmail godoc
 // @Router       /user/login/email [POST]
 // @Summary      User login with mail
 // @Description  User logins with mail, otp is sent to user mail
-// @Tags         auth
+// @Tags         Login
 // @Accept       json
 // @Produce      json
 // @Param        login body models.UserMail true "login"
@@ -286,11 +286,11 @@ func (h *Handler) UserLoginWithEmail(c *gin.Context) {
 
 }
 
-// UserRegister godoc
+// UserLoginWithOtp godoc
 // @Router       /user/login/otp [POST]
 // @Summary      User logins with otp
 // @Description  User inputs otp and mail
-// @Tags         auth
+// @Tags         Login
 // @Accept       json
 // @Produce      json
 // @Param        login body models.UserLoginMailOtp true "login"

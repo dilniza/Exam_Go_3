@@ -136,7 +136,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Login"
                 ],
                 "summary": "User login",
                 "parameters": [
@@ -188,7 +188,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Login"
                 ],
                 "summary": "User login with mail",
                 "parameters": [
@@ -240,7 +240,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Login"
                 ],
                 "summary": "User logins with otp",
                 "parameters": [
@@ -349,7 +349,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "Auth"
                 ],
                 "summary": "Change user password",
                 "parameters": [
@@ -395,7 +395,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "Forgetpassword"
                 ],
                 "summary": "Reset forgotten password",
                 "parameters": [
@@ -441,7 +441,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Register"
                 ],
                 "summary": "User register",
                 "parameters": [
@@ -493,7 +493,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Register"
                 ],
                 "summary": "User register",
                 "parameters": [
@@ -542,7 +542,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Updates the active status (enabled/disabled) of a user.",
+                "description": "Updates the active status of a user.",
                 "consumes": [
                     "application/json"
                 ],
@@ -550,12 +550,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "ChangeStatus"
                 ],
                 "summary": "Change user status",
                 "parameters": [
                     {
-                        "description": "user",
+                        "description": "status",
                         "name": "status",
                         "in": "body",
                         "required": true,

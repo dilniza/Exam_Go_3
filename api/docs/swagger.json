@@ -128,7 +128,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Login"
                 ],
                 "summary": "User login",
                 "parameters": [
@@ -180,7 +180,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Login"
                 ],
                 "summary": "User login with mail",
                 "parameters": [
@@ -232,7 +232,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Login"
                 ],
                 "summary": "User logins with otp",
                 "parameters": [
@@ -341,7 +341,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "Auth"
                 ],
                 "summary": "Change user password",
                 "parameters": [
@@ -387,7 +387,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "Forgetpassword"
                 ],
                 "summary": "Reset forgotten password",
                 "parameters": [
@@ -433,7 +433,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Register"
                 ],
                 "summary": "User register",
                 "parameters": [
@@ -485,7 +485,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Register"
                 ],
                 "summary": "User register",
                 "parameters": [
@@ -534,7 +534,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Updates the active status (enabled/disabled) of a user.",
+                "description": "Updates the active status of a user.",
                 "consumes": [
                     "application/json"
                 ],
@@ -542,12 +542,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "ChangeStatus"
                 ],
                 "summary": "Change user status",
                 "parameters": [
                     {
-                        "description": "user",
+                        "description": "status",
                         "name": "status",
                         "in": "body",
                         "required": true,

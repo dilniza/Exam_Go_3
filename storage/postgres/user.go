@@ -195,7 +195,7 @@ func (c *UserRepo) GetAll(ctx context.Context, req models.GetAllUsersRequest) (m
 		active,
 		created_at,
 		updated_at
-	FROM "Users" ` + filter
+	FROM "Users"` + filter
 
 	rows, err := c.db.Query(ctx, query)
 	if err != nil {
