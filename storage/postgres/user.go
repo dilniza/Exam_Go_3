@@ -77,9 +77,8 @@ func (c *UserRepo) Update(ctx context.Context, user models.UpdateUser, id string
 		last_name = $2,
 		mail = $3,
 		phone = $4,
-		sex = $5,
-		updated_at = $6
-	WHERE id = $7`
+		updated_at = $5
+	WHERE id = $6`
 
 	_, err := c.db.Exec(ctx, query,
 		user.FirstName,
