@@ -9,7 +9,7 @@ import (
 	"time"
 	"user/api/models"
 	"user/pkg/logger"
-	postgres "user/storage"
+	"user/storage"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -19,10 +19,10 @@ import (
 type UserRepo struct {
 	db     *pgxpool.Pool
 	logger logger.ILogger
-	redis  postgres.IRedisStorage
+	redis  storage.IRedisStorage
 }
 
-func NewUserRepo(db *pgxpool.Pool, log logger.ILogger, redis postgres.IRedisStorage) UserRepo {
+func NewUserRepo(db *pgxpool.Pool, log logger.ILogger, redis storage.IRedisStorage) UserRepo {
 	return UserRepo{
 		db:     db,
 		logger: log,
@@ -123,7 +123,7 @@ func (c *UserRepo) GetByID(ctx context.Context, id string) (models.User, error) 
 		active,
 		created_at,
 		updated_at
-	FROM Users 
+	FROM "Users" 
 	WHERE id = $1`
 
 	row := c.db.QueryRow(ctx, query, id)
@@ -196,7 +196,7 @@ func (c *UserRepo) GetAll(ctx context.Context, req models.GetAllUsersRequest) (m
 		active,
 		created_at,
 		updated_at
-	FROM Users ` + filter
+	FROM "Users" ` + filter
 
 	rows, err := c.db.Query(ctx, query)
 	if err != nil {

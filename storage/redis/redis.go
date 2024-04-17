@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"user/config"
-	"user/storage/postgres"
+	"user/storage"
+	
 
 	"time"
 
@@ -15,7 +16,7 @@ type Store struct {
 	db *redis.Client
 }
 
-func New(cfg config.Config) postgres.IRedisStorage {
+func New(cfg config.Config) storage.IRedisStorage {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: cfg.RedisHost + ":" + cfg.RedisPort,
 	})

@@ -17,7 +17,7 @@ type Service struct {
 	logger logger.ILogger
 }
 
-func New(storage postgres.IStorage, log logger.ILogger, redis postgres.IRedisStorage) Service {
+func New(storage storage.IStorage, log logger.ILogger, redis storage.IRedisStorage) Service {
 	return Service{
 		userService: NewUserService(storage, log, redis),
 		auth:        NewAuthService(storage, log, redis),
