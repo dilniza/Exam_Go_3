@@ -2,8 +2,15 @@ package service
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"time"
 	"user/api/models"
+	"user/config"
+	"user/pkg"
+	"user/pkg/jwt"
 	"user/pkg/logger"
+	"user/smtp"
 	"user/storage"
 
 	"golang.org/x/crypto/bcrypt"
@@ -55,4 +62,55 @@ func (a authService) ChangeStatus(ctx context.Context, status models.ChangeStatu
 		return "", err
 	}
 	return result, nil
+}
+
+func (a authService) UserLogin(ctx context.Context, loginRequest models.UserLoginRequest) (models.UserLoginResponse, error) {
+	fmt.Println(" loginRequest.Mail: ", loginRequest.Mail)
+	_, err := a.storage.User().LoginByMail(ctx, loginRequest.Mail)
+	if err != nil {
+		a.logger.Error("error while getting user credentials by login", logger.Error(err))
+		return models.UserLoginResponse{}, err
+	}
+
+	m := make(map[interface{}]interface{})
+
+	m["user_role"] = config.USER_ROLE
+
+	accessToken, refreshToken, err := jwt.GenJWT(m)
+	if err != nil {
+		a.logger.Error("error while generating tokens for user login", logger.Error(err))
+		return models.UserLoginResponse{}, err
+	}
+
+	return models.UserLoginResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
+}
+
+func (a authService) UserLoginOtp(ctx context.Context, mail models.UserMail) error {
+
+	_, err := a.storage.User().CheckMailExists(ctx, mail.Mail)
+	if err == nil {
+		a.logger.Error("gmail address isn't registered", logger.Error(err))
+		return errors.New("gmail address isn't registered")
+	}
+
+	otpCode := pkg.GenerateOTP()
+
+	msg := fmt.Sprintf("Your OTP code is: %v, for registering RENT_CAR. Don't give it to anyone", otpCode)
+
+	err = a.redis.Set(ctx, mail.Mail, otpCode, time.Minute*2)
+	if err != nil {
+		a.logger.Error("error while setting otpCode to redis User register", logger.Error(err))
+		return err
+	}
+
+	err = smtp.SendMail(mail.Mail, msg)
+	if err != nil {
+		a.logger.Error("error while sending otp code to User register", logger.Error(err))
+		return err
+	}
+
+	return nil
 }

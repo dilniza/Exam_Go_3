@@ -346,3 +346,50 @@ func (c *UserRepo) ChangeStatus(ctx context.Context, status models.ChangeStatus)
 
 	return status.ID, nil
 }
+
+func (c *UserRepo) LoginByMail(ctx context.Context, user models.UserLoginMailOtp) (string, error) {
+	var (
+		firstname sql.NullString
+		lastname  sql.NullString
+		phone     sql.NullString
+		password  sql.NullString
+		sex       sql.NullString
+		mail      sql.NullString
+	)
+
+	query := `SELECT
+		mail,
+        first_name,
+        last_name,
+        password
+        phone,
+        sex
+    FROM "Users" 
+    WHERE mail = $1`
+
+	row := c.db.QueryRow(ctx, query, user.Mail)
+	err := row.Scan(
+		&mail,
+		&firstname,
+		&lastname,
+		&password,
+		&phone,
+		&sex,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", err
+		}
+		c.logger.Error("failed to scan user by email from database", logger.Error(err))
+		return "", err
+	}
+
+	user.User.Mail = mail.String
+	user.User.FirstName = firstname.String
+	user.User.LastName = lastname.String
+	user.User.Password = password.String
+	user.User.Phone = phone.String
+	user.User.Sex = sex.String
+
+	return user.Mail, nil
+}

@@ -29,14 +29,20 @@ func New(services service.IServiceManager, log logger.ILogger) *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/user", h.CreateUser)
+	
+	r.POST("user/password", h.ForgetPasswordOtp)
 	r.POST("user/password/reset", h.ForgetPassword)
+	r.POST("user/login", h.LoginUser)
+	r.POST("user/register", h.UserRegister)
+	r.POST("user/register-confirm", h.UserRegisterConfirm)
 
 	r.Use(authMiddleware)
 	r.Use(logMiddleware)
-
-	r.PUT("/user/:id", h.UpdateUser)
+	
 	r.PATCH("/user", h.ChangePassword)
 	r.PATCH("/user/status", h.ChangeStatus)
+
+	r.PUT("/user/:id", h.UpdateUser)
 	r.GET("/user/:id", h.GetUserByID)
 	r.GET("/user", h.GetAllUsers)
 	r.DELETE("/user/:id", h.DeleteUser)

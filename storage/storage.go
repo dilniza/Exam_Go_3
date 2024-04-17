@@ -23,6 +23,7 @@ type IUserStorage interface {
 	CheckMailExists(ctx context.Context, mail string) (bool, error)
 	ForgetPassword(ctx context.Context, forget models.ForgetPassword) (string, error)
 	ChangeStatus(ctx context.Context, status models.ChangeStatus) (string, error)
+	LoginByMail(ctx context.Context, login string) (string, error)
 }
 
 type IRedisStorage interface {

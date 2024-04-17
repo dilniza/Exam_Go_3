@@ -89,3 +89,4 @@ func (s userService) Delete(ctx context.Context, id string) error {
 	}
 	return nil
 }
+
